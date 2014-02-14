@@ -49,34 +49,88 @@ public static class SEPostsMap extends Mapper<LongWritable, Text, NullWritable, 
         		            Element root = doc.getRootElement();
         		           
         		            String id =root.getAttributeValue("Id");
-        		            if(null != id) {
-        		            	value= value + id.trim();
-        		            }
-        		            
         		            String postTypeId =root.getAttributeValue("PostTypeId");
-        		            if(null != postTypeId) {
-        		            	value= value + "," + postTypeId.trim();
-        		            }
-        		            
         		            String accAnsId =root.getAttributeValue("AcceptedAnswerId");
-        		            if(null != accAnsId) {
-        		            	value= value + "," + accAnsId.trim();
-        		            }
-        		            
         		            String creationDate =root.getAttributeValue("CreationDate");
-        		            if(null != creationDate) {
-        		            	creationDate = creationDate.replace("T", " ");
-        		            	value= value + "," + creationDate.trim();
-        		            }
-        		            
         		            String score =root.getAttributeValue("Score");
-        		            if(null != score) {
-        		            	value= value + "," + score.trim();
-        		            }
-        		            
         		            String viewCount =root.getAttributeValue("ViewCount");
-        		            if(null != viewCount) {
-        		            	value= value + "," + viewCount.trim();
+        		            String ownerUserId = root.getAttributeValue("OwnerUserId");
+        		            String answerCount = root.getAttributeValue("AnswerCount");
+        		            String commentCount = root.getAttributeValue("CommentCount");
+        		            String favCount = root.getAttributeValue("FavoriteCount");
+        		            String closedDate = root.getAttributeValue("ClosedDate");
+        		            
+        		            
+        		            if((null != id && !"".equalsIgnoreCase(id)) && (null != postTypeId && !"".equalsIgnoreCase(postTypeId)) && (null != creationDate && !"".equalsIgnoreCase(creationDate))) {
+        		            	if(null != id && !"".equalsIgnoreCase(id)) {
+            		            	value= value + id.trim();
+            		            }
+            		            
+            		            
+            		            if(null != postTypeId && !"".equalsIgnoreCase(postTypeId)) {
+            		            	value= value + "," + postTypeId.trim();
+            		            }
+            		            
+            		            
+            		            if(null != accAnsId && !"".equalsIgnoreCase(accAnsId)) {
+            		            	value= value + "," + accAnsId.trim();
+            		            } else {
+            		            	value= value + "," + "-1";
+            		            }
+            		            
+            		            
+            		            if(null != creationDate && !"".equalsIgnoreCase(creationDate)) {
+            		            	creationDate = creationDate.replace("T", " ");
+            		            	value= value + "," + creationDate.trim();
+            		            }
+            		            
+            		            
+            		            if(null != score && !"".equalsIgnoreCase(score)) {
+            		            	value= value + "," + score.trim();
+            		            } else {
+            		            	value= value + "," + "0";
+            		            }
+            		            
+            		            
+            		            if(null != viewCount && !"".equalsIgnoreCase(viewCount)) {
+            		            	value= value + "," + viewCount.trim();
+            		            } else {
+            		            	value= value + "," + "0";
+            		            }
+            		            
+            		            if(null != ownerUserId && !"".equalsIgnoreCase(ownerUserId)) {
+            		            	value= value + "," + ownerUserId.trim();
+            		            } else {
+            		            	value= value + "," + "-1";
+            		            }
+            		            
+            		            if(null != answerCount && !"".equalsIgnoreCase(answerCount)) {
+            		            	value= value + "," + answerCount.trim();
+            		            } else {
+            		            	value= value + "," + "0";
+            		            }
+            		            
+            		            if(null != commentCount && !"".equalsIgnoreCase(commentCount)) {
+            		            	value= value + "," + commentCount.trim();
+            		            } else {
+            		            	value= value + "," + "0";
+            		            }
+            		            
+            		            
+            		            if(null != favCount && !"".equalsIgnoreCase(favCount)) {
+            		            	value= value + "," + favCount.trim();
+            		            } else {
+            		            	value= value + "," + "0";
+            		            }
+            		            
+            		            if(null != closedDate && !"".equalsIgnoreCase(closedDate)) {
+            		            	closedDate = closedDate.replace("T", " ");
+            		            	value= value + "," + closedDate.trim();
+            		            } else {
+            		            	value= value + "," + "NULL";
+            		            }
+            		            
+            		            context.write(NullWritable.get(), new Text(value));
         		            }
         		            
         		            /*String body =root.getAttributeValue("Body");
@@ -90,7 +144,7 @@ public static class SEPostsMap extends Mapper<LongWritable, Text, NullWritable, 
         		            	value= value + "," + body.trim();
         		            }*/
         		            
-        		            context.write(NullWritable.get(), new Text(value));
+        		            
         		        } catch (JDOMException ex) {
         		            //Logger.getLogger(SECommentsMap.class.getName()).log(Level.SEVERE, null, ex);
         		        } catch (IOException ex) {

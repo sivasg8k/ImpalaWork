@@ -49,27 +49,30 @@ public static class SEVotesMap extends Mapper<LongWritable, Text, NullWritable, 
         		            Element root = doc.getRootElement();
         		           
         		            String id =root.getAttributeValue("Id");
-        		            if(null != id) {
-        		            	value= value + id.trim();
-        		            }
-        		            
         		            String postId =root.getAttributeValue("PostId");
-        		            if(null != postId) {
-        		            	value= value + "," + postId.trim();
-        		            }
-        		            
         		            String voteTypeId =root.getAttributeValue("VoteTypeId");
-        		            if(null != voteTypeId) {
-        		            	value= value + "," + voteTypeId.trim();
-        		            }
-        		            
         		            String creationDate =root.getAttributeValue("CreationDate");
-        		            if(null != creationDate) {
-        		            	creationDate = creationDate.replace("T", " ");
-        		            	value= value + "," + creationDate.trim();
+        		            
+        		            if((null != id && !"".equalsIgnoreCase(id)) && (null != postId && !"".equalsIgnoreCase(postId)) && (null != voteTypeId && !"".equalsIgnoreCase(voteTypeId)) && (null != creationDate && !"".equalsIgnoreCase(creationDate))) {
+        		            	if(null != id) {
+            		            	value= value + id.trim();
+            		            }
+            		            
+            		            if(null != postId) {
+            		            	value= value + "," + postId.trim();
+            		            }
+            		            
+            		            if(null != voteTypeId) {
+            		            	value= value + "," + voteTypeId.trim();
+            		            }
+            		            
+            		            if(null != creationDate) {
+            		            	creationDate = creationDate.replace("T", " ");
+            		            	value= value + "," + creationDate.trim();
+            		            }
+            		            context.write(NullWritable.get(), new Text(value));
         		            }
         		            
-        		            context.write(NullWritable.get(), new Text(value));
         		        } catch (JDOMException ex) {
         		            //Logger.getLogger(SECommentsMap.class.getName()).log(Level.SEVERE, null, ex);
         		        } catch (IOException ex) {

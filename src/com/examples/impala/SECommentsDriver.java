@@ -49,43 +49,53 @@ public static class SECommentsMap extends Mapper<LongWritable, Text, NullWritabl
         		            Element root = doc.getRootElement();
         		           
         		            String id =root.getAttributeValue("Id");
-        		            if(null != id) {
-        		            	value= value + id.trim();
-        		            }
-        		            
         		            String postId =root.getAttributeValue("PostId");
-        		            if(null != postId) {
-        		            	value= value + "," + postId.trim();
-        		            }
-        		            
         		            String score =root.getAttributeValue("Score");
-        		            if(null != score) {
-        		            	value= value + "," + score.trim();
-        		            }
-        		            
-        		            String text =root.getAttributeValue("Text");
-        		            if(null != text) {
-        		            	text = text.replaceAll("\n", "");
-        		            	text = text.replaceAll("\"","");
-        		            	text = text.replaceAll(",","");
-        		            	text = text.replaceAll("&gt;", "").replaceAll("&lt;","").replaceAll("&quot;","").replaceAll("&#xA;","").replaceAll("&#xD;","").replaceAll("&amp;","");
-        		            	
-        		            	value= value + "," + text.trim();
-        		            }
-        		            
+        		            //String text =root.getAttributeValue("Text");
         		            String creationDate =root.getAttributeValue("CreationDate");
-        		            if(null != creationDate) {
-        		            	creationDate = creationDate.replace("T", " ");
-        		            	value= value + "," + creationDate.trim();
-        		            }
-        		            
-        		            
         		            String userId =root.getAttributeValue("UserId");
-        		            if(null != userId) {
-        		            	value= value + "," + userId.trim();
+        		            
+        		            if((null != id && !"".equalsIgnoreCase(id)) && (null != postId && !"".equalsIgnoreCase(postId)) && (null != creationDate && !"".equalsIgnoreCase(creationDate))) {
+        		            	if(null != id && !"".equalsIgnoreCase(id)) {
+            		            	value= value + id.trim();
+            		            }
+            		            
+            		            if(null != postId && !"".equalsIgnoreCase(postId)) {
+            		            	value= value + "," + postId.trim();
+            		            }
+            		            
+            		            if(null != score && !"".equalsIgnoreCase(score)) {
+            		            	value= value + "," + score.trim();
+            		            } else {
+            		            	value= value + "," + "0";
+            		            }
+            		            
+            		            
+            		           /* if(null != text && !"".equalsIgnoreCase(text)) {
+            		            	text = text.replaceAll("\n", "");
+            		            	text = text.replaceAll("\"","");
+            		            	text = text.replaceAll(",","");
+            		            	text = text.replaceAll("&gt;", "").replaceAll("&lt;","").replaceAll("&quot;","").replaceAll("&#xA;","").replaceAll("&#xD;","").replaceAll("&amp;","");
+            		            	value= value + "," + text.trim();
+            		            } else {
+            		            	value= value + "," + "NULL";
+            		            }*/
+            		            
+            		            
+            		            if(null != creationDate && !"".equalsIgnoreCase(creationDate)) {
+            		            	creationDate = creationDate.replace("T", " ");
+            		            	value= value + "," + creationDate.trim();
+            		            }
+            		            
+            		            if(null != userId && !"".equalsIgnoreCase(userId)) {
+            		            	value= value + "," + userId.trim();
+            		            } else {
+            		            	value= value + "," + "-1";
+            		            }
+            		            context.write(NullWritable.get(), new Text(value));
         		            }
         		            
-        		             context.write(NullWritable.get(), new Text(value));
+        		            
         		        } catch (JDOMException ex) {
         		            //Logger.getLogger(SECommentsMap.class.getName()).log(Level.SEVERE, null, ex);
         		        } catch (IOException ex) {

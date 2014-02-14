@@ -50,58 +50,91 @@ public static class SEUsersMap extends Mapper<LongWritable, Text, NullWritable, 
         		            Element root = doc.getRootElement();
         		           
         		            String id =root.getAttributeValue("Id");
-        		            if(null != id) {
-        		            	value= value + id.trim();
-        		            }
-        		            
         		            String reputation =root.getAttributeValue("Reputation");
-        		            if(null != reputation) {
-        		            	value= value + "," + reputation.trim();
-        		            }
-        		            
         		            String creationDate =root.getAttributeValue("CreationDate");
-        		            if(null != creationDate) {
-        		            	creationDate = creationDate.replace("T", " ");
-        		            	value= value + "," + creationDate.trim();
-        		            }
-        		            
         		            String displayName =root.getAttributeValue("DisplayName");
-        		            if(null != displayName) {
-        		            	value= value + "," + displayName.trim();
-        		            }
-        		            
         		            String lastAccessDate =root.getAttributeValue("LastAccessDate");
-        		            if(null != lastAccessDate) {
-        		            	lastAccessDate = lastAccessDate.replace("T", " ");
-        		            	value= value + "," + lastAccessDate.trim();
-        		            }
-        		            
         		            String location =root.getAttributeValue("Location");
-        		            if(null != location) {
-        		            	value= value + "," + location.trim();
-        		            }
-        		            
         		            String views =root.getAttributeValue("Views");
-        		            if(null != views) {
-        		            	value= value + "," + views.trim();
-        		            }
-        		            
         		            String upVotes =root.getAttributeValue("UpVotes");
-        		            if(null != upVotes) {
-        		            	value= value + "," + upVotes.trim();
-        		            }
-        		            
         		            String downVotes =root.getAttributeValue("DownVotes");
-        		            if(null != downVotes) {
-        		            	value= value + "," + downVotes.trim();
-        		            }
-        		            
         		            String age =root.getAttributeValue("Age");
-        		            if(null != age) {
-        		            	value= value + "," + age.trim();
+        		            
+        		            if((null != id && !"".equalsIgnoreCase(id)) && (null != creationDate && !"".equalsIgnoreCase(creationDate)) && (null != lastAccessDate && !"".equalsIgnoreCase(lastAccessDate))) {
+        		            	if(null != id && !"".equalsIgnoreCase(id)) {
+            		            	value= value + id.trim();
+            		            }
+            		            
+            		            
+            		            if(null != reputation && !"".equalsIgnoreCase(reputation)) {
+            		            	value= value + "," + reputation.trim();
+            		            } else {
+            		            	value= value + "," + "0";
+            		            }
+            		            
+            		            
+            		            if(null != creationDate && !"".equalsIgnoreCase(creationDate)) {
+            		            	creationDate = creationDate.replace("T", " ");
+            		            	value= value + "," + creationDate.trim();
+            		            }
+            		            
+            		            
+            		            if(null != displayName && !"".equalsIgnoreCase(displayName)) {
+            		            	value= value + "," + displayName.trim();
+            		            } else {
+            		            	value= value + "," + "NULL";
+            		            }
+            		            
+            		            
+            		            if(null != lastAccessDate && !"".equalsIgnoreCase(lastAccessDate)) {
+            		            	lastAccessDate = lastAccessDate.replace("T", " ");
+            		            	value= value + "," + lastAccessDate.trim();
+            		            }
+            		            
+            		            
+            		            if(null != location && !"".equalsIgnoreCase(location)) {
+            		            	
+            		            	if(location.indexOf(",") != -1) {
+            		            		String[] loc = location.split(",");
+                		            	value= value + "," + loc[0].trim() + "," + loc[1].trim();
+            		            	} else {
+            		            		value= value + "," + location.trim() + ",NULL";
+            		            	}
+            		            } else {
+            		            	value= value + "," + "NULL,NULL";
+            		            }
+            		            
+            		            
+            		            if(null != views && !"".equalsIgnoreCase(views)) {
+            		            	value= value + "," + views.trim();
+            		            } else {
+            		            	value= value + "," + "0";
+            		            }
+            		            
+            		            
+            		            if(null != upVotes && !"".equalsIgnoreCase(upVotes)) {
+            		            	value= value + "," + upVotes.trim();
+            		            } else {
+            		            	value= value + "," + "0";
+            		            }
+            		            
+            		            
+            		            if(null != downVotes && !"".equalsIgnoreCase(downVotes)) {
+            		            	value= value + "," + downVotes.trim();
+            		            } else {
+            		            	value= value + "," + "0";
+            		            }
+            		            
+            		            if(null != age && !"".equalsIgnoreCase(age)) {
+            		            	value= value + "," + age.trim();
+            		            } else {
+            		            	value= value + "," + "0";
+            		            }
+            		            context.write(NullWritable.get(), new Text(value));
         		            }
         		            
-        		             context.write(NullWritable.get(), new Text(value));
+        		            
+        		            
         		        } catch (JDOMException ex) {
         		            //Logger.getLogger(SECommentsMap.class.getName()).log(Level.SEVERE, null, ex);
         		        } catch (IOException ex) {
