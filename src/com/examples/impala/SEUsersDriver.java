@@ -91,18 +91,23 @@ public static class SEUsersMap extends Mapper<LongWritable, Text, NullWritable, 
             		            	value= value + "," + lastAccessDate.trim();
             		            }
             		            
-            		            
             		            if(null != location && !"".equalsIgnoreCase(location)) {
             		            	
             		            	if(location.indexOf(",") != -1) {
             		            		String[] loc = location.split(",");
-                		            	value= value + "," + loc[0].trim() + "," + loc[1].trim();
+            		            		if(null != loc && loc.length == 2) {
+            		            			value= value + "," + loc[0].trim() + "," + loc[1].trim();
+            		            		} else {
+            		            			value= value + "," + "NULL,NULL";
+            		            		}
+                		            	
             		            	} else {
             		            		value= value + "," + location.trim() + ",NULL";
             		            	}
             		            } else {
             		            	value= value + "," + "NULL,NULL";
             		            }
+            		            
             		            
             		            
             		            if(null != views && !"".equalsIgnoreCase(views)) {
