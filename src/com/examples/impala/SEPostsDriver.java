@@ -127,7 +127,7 @@ public static class SEPostsMap extends Mapper<LongWritable, Text, NullWritable, 
             		            	closedDate = closedDate.replace("T", " ");
             		            	value= value + "," + closedDate.trim();
             		            } else {
-            		            	value= value + "," + "NULL";
+            		            	value= value + "," + "";
             		            }
             		            
             		            context.write(NullWritable.get(), new Text(value));
